@@ -239,12 +239,6 @@ window.openDMCA = (updateHistory = true) => {
         </div>`;
 };
 
-window.filterByCategory = (catName) => {
-    const filtered = allApps.filter(app => app.category === catName);
-    renderApps(filtered);
-    window.scrollTo(0, 0);
-};
-
 window.addNewApp = async () => {
     const name = document.getElementById('new-app-name').value;
     const icon = document.getElementById('new-app-icon').value;

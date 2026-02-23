@@ -84,18 +84,11 @@
                 <h2 class="hero-title">Launch Your <span class="rocket-gradient">Mobile Experience</span></h2>
                 <p class="hero-subtitle">Fast. Safe. Verified. Your trusted source for Premium APKs.</p>
             </div>
-            <div class="filter-buttons">
-    <button onclick="renderApps(allApps)">All</button>
-    <button onclick="filterByCategory('Games')">Games</button>
-    <button onclick="filterByCategory('Mod')">Mod</button>
-    <button onclick="filterByCategory('Editing')">Editing Apps</button>
-</div>
         </header>
 
         <section class="container main-content">
             <div class="trending-header">
                 <h3>Trending Mods 🔥</h3>
-                <button class="view-all" onclick="renderApps(allApps)">View All</button>
             </div>
             <div class="app-grid" id="app-list">
                 </div>
@@ -135,7 +128,6 @@
     <input type="text" id="new-app-name" placeholder="App Name">
     <input type="text" id="new-app-icon" placeholder="Icon URL">
     <input type="text" id="new-app-link" placeholder="Download Link">
-    <input type="text" id="app-category" placeholder="Category">
     </div>
     <textarea id="new-app-desc" placeholder="Mod Features..."></textarea>
     <button class="action-btn" onclick="addNewApp()">PUBLISH NOW</button>
