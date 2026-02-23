@@ -239,35 +239,23 @@ window.openDMCA = (updateHistory = true) => {
         </div>`;
 };
 
-window.filterApps = () => {
-    const term = document.getElementById('main-search').value.toLowerCase();
-    renderApps(allApps.filter(app => app.name.toLowerCase().includes(term)));
+window.filterByCategory = (catName) => {
+    const filtered = allApps.filter(app => app.category === catName);
+    renderApps(filtered);
+    window.scrollTo(0, 0);
 };
 
 window.addNewApp = async () => {
-    const name = document.getElementById('new-app-name').value;
-    const icon = document.getElementById('new-app-icon').value;
-    const link = document.getElementById('new-app-link').value;
-    const desc = document.getElementById('new-app-desc').value;
-    
-    // Categories ko array mein collect karna
-    const categories = [
-        document.getElementById('cat1').value,
-        document.getElementById('cat2').value,
-        document.getElementById('cat3').value
-    ].filter(c => c !== ""); // Sirf bhare hue fields lenge
+    // ... baaki details
+    const category = document.getElementById('app-category').value.trim(); // User jo type karega
 
     if(!name || !link) return alert("Fill Name & Link!");
     
-    await addDoc(collection(db, "apps"), { name, icon, link, description: desc, categories });
+    await addDoc(collection(db, "apps"), { 
+        name, icon, link, description: desc, 
+        category: category // Yahi word filter button mein kaam aayega
+    });
     location.reload();
-};
-
-window.deleteAppConfirm = async () => {
-    if(confirm("Delete this mod?")) {
-        await deleteDoc(doc(db, "apps", selectedAppId));
-        location.reload();
-    }
 };
 
 window.loginWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider()).then(() => location.reload());
@@ -301,12 +289,4 @@ window.generateSitemap = () => {
     const blob = new Blob([xml], { type: 'text/xml' });
     const url = URL.createObjectURL(blob);
     window.open(url, '_blank');
-};
-
-window.filterByCategory = (category) => {
-    const filtered = allApps.filter(app => 
-        app.categories && app.categories.includes(category)
-    );
-    renderApps(filtered);
-    window.scrollTo(0, 0);
 };

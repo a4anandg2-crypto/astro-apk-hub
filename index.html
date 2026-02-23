@@ -55,12 +55,7 @@
                 <span>🚀</span>SmArT  AStro HuB
             </h1>
  
-<div class="category-filter" style="display:flex; gap:10px; margin-bottom:25px; padding-top:15px; justify-content:center; flex-wrap:wrap;">
-    <button onclick="filterByCategory('Games')" class="cat-btn">Games</button>
-    <button onclick="filterByCategory('Mods')" class="cat-btn">Mods</button>
-    <button onclick="filterByCategory('Editing')" class="cat-btn">Editing Apps</button>
-</div>        
-            <div class="search-section">
+             <div class="search-section">
                 <input type="text" id="main-search" placeholder="Search Mods..." onkeyup="filterApps()" aria-label="Search Apps">
                 <div class="user-auth">
                     <img id="user-photo" 
@@ -89,6 +84,12 @@
                 <h2 class="hero-title">Launch Your <span class="rocket-gradient">Mobile Experience</span></h2>
                 <p class="hero-subtitle">Fast. Safe. Verified. Your trusted source for Premium APKs.</p>
             </div>
+            <div class="filter-buttons">
+    <button onclick="renderApps(allApps)">All</button>
+    <button onclick="filterByCategory('Games')">Games</button>
+    <button onclick="filterByCategory('Mod')">Mod</button>
+    <button onclick="filterByCategory('Editing')">Editing Apps</button>
+</div>
         </header>
 
         <section class="container main-content">
@@ -134,13 +135,8 @@
     <input type="text" id="new-app-name" placeholder="App Name">
     <input type="text" id="new-app-icon" placeholder="Icon URL">
     <input type="text" id="new-app-link" placeholder="Download Link">
-    
-    <div style="display:flex; gap:5px; margin-top:10px;">
-        <input type="text" id="cat1" placeholder="Category 1">
-        <input type="text" id="cat2" placeholder="Category 2">
-        <input type="text" id="cat3" placeholder="Category 3">
+    <input type="text" id="app-category" placeholder="Category">
     </div>
-    
     <textarea id="new-app-desc" placeholder="Mod Features..."></textarea>
     <button class="action-btn" onclick="addNewApp()">PUBLISH NOW</button>
 </div>
