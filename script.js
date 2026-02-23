@@ -246,15 +246,12 @@ window.filterByCategory = (catName) => {
 };
 
 window.addNewApp = async () => {
-    // ... baaki details
-    const category = document.getElementById('app-category').value.trim(); // User jo type karega
-
+    const name = document.getElementById('new-app-name').value;
+    const icon = document.getElementById('new-app-icon').value;
+    const link = document.getElementById('new-app-link').value;
+    const desc = document.getElementById('new-app-desc').value;
     if(!name || !link) return alert("Fill Name & Link!");
-    
-    await addDoc(collection(db, "apps"), { 
-        name, icon, link, description: desc, 
-        category: category // Yahi word filter button mein kaam aayega
-    });
+    await addDoc(collection(db, "apps"), { name, icon, link, description: desc });
     location.reload();
 };
 
