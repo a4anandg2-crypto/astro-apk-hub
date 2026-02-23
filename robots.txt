@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin-modal
+Disallow: /user-menu
+
+Sitemap: https://astroapkhub.in/sitemap.xml
