@@ -95,17 +95,17 @@ body { background-color: var(--bg-dark); color: white; min-height: 100vh; overfl
     color: white;
 }
 
-/* Responsive Search Bar & Grid */
+/* Responsive Search Bar */
 @media (max-width: 600px) {
     .nav-flex { flex-direction: column; gap: 15px; }
     #main-search { width: 100%; }
     .hero-title { font-size: 32px; }
     .hero-subtitle { font-size: 14px; }
     
-    /* Updated Grid for exact 2 columns on mobile */
+    /* Grid adjustment for small screens */
     .app-grid { 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 12px; 
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+        gap: 15px; 
     }
     
     /* Dynamic Page padding for mobile */
