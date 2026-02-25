@@ -197,17 +197,10 @@ body { background-color: var(--bg-dark); color: white; min-height: 100vh; overfl
     gap: 20px; 
 }
 .app-card { 
-    background: var(--glass-bg); 
-    padding: 15px; 
-    border-radius: 20px; 
-    border: 1px solid var(--border-color); 
-    cursor: pointer; 
-    text-align: center; 
-    display: flex;         /* Flexbox enable karein */
+    height: 250px; /* Card ki height fix kar di */
+    display: flex; 
     flex-direction: column; 
-    align-items: center; 
-    overflow: hidden;      /* Koi bhi cheez bahar na nikle */
-    height: 220px;         /* Fixed height taaki cards uniform rahein */
+    justify-content: space-between; 
 }
 
 /* Image Background Fix */
