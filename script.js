@@ -75,22 +75,10 @@ window.renderApps = (data) => {
         const safeLink = encodeURIComponent(app.link);
 
         return `
-        <div class="app-card-modern" onclick="decodeAndOpen('${safeName}', '${safeIcon}', '${safeLink}', '${safeDesc}', '${app.id}')">
-            <div class="card-header">
-                <img src="${app.icon}" class="app-icon" onerror="this.src='https://via.placeholder.com/150'">
-                <div>
-                    <span class="app-name">${app.name}</span>
-                    <span class="rating">★ 4.9</span>
-                </div>
-            </div>
-            <p class="app-desc-preview">${app.description ? app.description.substring(0, 80) + '...' : 'Premium Modded App...'}</p>
-            <div class="card-footer">
-                <div class="meta-info">
-                    <span>🔄 v8.18.2</span><br>
-                    <span>💾 71 MB</span>
-                </div>
-                <button class="dl-btn">Download</button>
-            </div>
+        <div class="app-card" onclick="decodeAndOpen('${safeName}', '${safeIcon}', '${safeLink}', '${safeDesc}', '${app.id}')">
+            <img src="${app.icon}" class="app-icon" onerror="this.src='https://via.placeholder.com/150'">
+            <span class="app-name">${app.name}</span>
+            <span style="font-size:10px; color:#f97316; font-weight:bold;">VERIFIED APK</span>
         </div>
     `}).join('');
 };
