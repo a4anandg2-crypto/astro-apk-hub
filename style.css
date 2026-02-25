@@ -48,7 +48,15 @@ body { background-color: var(--bg-dark); color: white; min-height: 100vh; overfl
 .app-card { background: var(--glass-bg); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); cursor: pointer; text-align: center; }
 .app-card:hover { transform: translateY(-8px); border-color: var(--primary-orange); background: rgba(255,255,255,0.08); }
 .app-icon { width: 100%; aspect-ratio: 1; border-radius: 18px; object-fit: cover; margin-bottom: 12px; }
-.app-name { font-weight: 700; display: block; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app-name { 
+    font-weight: 700; 
+    display: block; 
+    margin-bottom: 5px; 
+    width: 100%;           
+    white-space: nowrap;   
+    overflow: hidden;      
+    text-overflow: ellipsis; 
+}
 
 /* Modals & Dropdown */
 .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
@@ -87,17 +95,17 @@ body { background-color: var(--bg-dark); color: white; min-height: 100vh; overfl
     color: white;
 }
 
-/* Responsive Search Bar */
+/* Responsive Search Bar & Grid */
 @media (max-width: 600px) {
     .nav-flex { flex-direction: column; gap: 15px; }
     #main-search { width: 100%; }
     .hero-title { font-size: 32px; }
     .hero-subtitle { font-size: 14px; }
     
-    /* Grid adjustment for small screens */
+    /* Updated Grid for exact 2 columns on mobile */
     .app-grid { 
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-        gap: 15px; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 12px; 
     }
     
     /* Dynamic Page padding for mobile */
@@ -189,10 +197,17 @@ body { background-color: var(--bg-dark); color: white; min-height: 100vh; overfl
     gap: 20px; 
 }
 .app-card { 
-    height: 250px; /* Card ki height fix kar di */
-    display: flex; 
+    background: var(--glass-bg); 
+    padding: 15px; 
+    border-radius: 20px; 
+    border: 1px solid var(--border-color); 
+    cursor: pointer; 
+    text-align: center; 
+    display: flex;         /* Flexbox enable karein */
     flex-direction: column; 
-    justify-content: space-between; 
+    align-items: center; 
+    overflow: hidden;      /* Koi bhi cheez bahar na nikle */
+    height: 220px;         /* Fixed height taaki cards uniform rahein */
 }
 
 /* Image Background Fix */
