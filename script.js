@@ -19,21 +19,16 @@ const db = getFirestore(app);
 
 let allApps = [];
 let selectedAppId = null;
-const ADMIN_EMAIL = "a4anandg2@gmail.com";
+const ADMIN_EMAILS = ["a4anandg2@gmail.com", "per149209@gmail.com"];
 
 const getSlug = (text) => text.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
 
 onAuthStateChanged(auth, (user) => {
-    const adminDiv = document.getElementById('admin-controls');
-    const guestDiv = document.getElementById('guest-controls');
-    if (user && user.email === ADMIN_EMAIL) {
-        if(adminDiv) adminDiv.style.display = 'block';
-        if(guestDiv) guestDiv.style.display = 'none';
-        document.getElementById('user-photo').src = user.photoURL;
-    } else {
-        if(adminDiv) adminDiv.style.display = 'none';
-        if(guestDiv) guestDiv.style.display = 'block';
-    }
+    // Ab ye check karega ki user ki email list mein hai ya nahi
+    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
+    
+    document.getElementById('admin-controls').style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('guest-controls').style.display = isAdmin ? 'none' : 'block';
 });
 
 async function loadApps() {
