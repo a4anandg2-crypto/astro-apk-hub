@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCiIYUWBTr3__sQo--g6dWvMIxDjqC7r0o",
   authDomain: "astro-apk-hub.firebaseapp.com",
@@ -26,7 +25,11 @@ const getSlug = (text) => text.toLowerCase().trim().replace(/[^\w\s-]/g, '').rep
 onAuthStateChanged(auth, (user) => {
     const adminDiv = document.getElementById('admin-controls');
     const guestDiv = document.getElementById('guest-controls');
-    if (user && user.email === ADMIN_EMAIL) {
+    
+    // Multiple Admin Support Fix
+    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
+    
+    if (isAdmin) {
         if(adminDiv) adminDiv.style.display = 'block';
         if(guestDiv) guestDiv.style.display = 'none';
         document.getElementById('user-photo').src = user.photoURL;
@@ -66,19 +69,31 @@ const checkUrlAndRoute = () => {
     }
 };
 
+// ERROR 2 FIXED: Search Function added
+window.filterApps = () => {
+    const query = document.getElementById('main-search').value.toLowerCase().trim();
+    const filtered = query ? allApps.filter(a => a.name.toLowerCase().includes(query)) : allApps;
+    renderApps(filtered);
+};
+
 window.renderApps = (data) => {
     const list = document.getElementById('app-list');
     list.innerHTML = data.map(app => {
-        const safeDesc = encodeURIComponent(app.description || '');
-        const safeName = encodeURIComponent(app.name);
-        const safeIcon = encodeURIComponent(app.icon);
-        const safeLink = encodeURIComponent(app.link);
+        // ERROR 1 FIXED: Replaced single quotes so they don't break the onclick HTML
+        const safeDesc = encodeURIComponent(app.description || '').replace(/'/g, "%27");
+        const safeName = encodeURIComponent(app.name || '').replace(/'/g, "%27");
+        const safeIcon = encodeURIComponent(app.icon || '').replace(/'/g, "%27");
+        const safeLink = encodeURIComponent(app.link || '').replace(/'/g, "%27");
+        
+        // ERROR 3 FIXED: Added short description to the card
+        const shortDesc = app.description ? app.description.substring(0, 50) + '...' : 'Premium Modded App...';
 
         return `
         <div class="app-card" onclick="decodeAndOpen('${safeName}', '${safeIcon}', '${safeLink}', '${safeDesc}', '${app.id}')">
             <img src="${app.icon}" class="app-icon" onerror="this.src='https://via.placeholder.com/150'">
             <span class="app-name">${app.name}</span>
-            <span style="font-size:10px; color:#f97316; font-weight:bold;">VERIFIED APK</span>
+            <p style="font-size:12px; color:#9ca3af; margin: 5px 0;">${shortDesc}</p>
+            <span style="font-size:10px; color:#f97316; font-weight:bold;">✅ VERIFIED APK</span>
         </div>
     `}).join('');
 };
@@ -100,6 +115,9 @@ window.openAppDetails = (name, icon, link, desc, id, updateHistory = true) => {
         if (line.trim() === "") return `<br/>`;
         return `<p style="margin-bottom:15px; color:#94a3b8; line-height:1.7; font-size:16px;">${line}</p>`;
     }).join('') : '<p>Premium features unlocked for best experience.</p>';
+
+    // Multiple admin button display fix
+    const isAdmin = auth.currentUser && ADMIN_EMAILS.includes(auth.currentUser.email);
 
     document.getElementById('dynamic-content').innerHTML = `
         <div class="app-detail-card" style="max-width:900px; margin: 0 auto; animation: fadeIn 0.5s ease;">
@@ -131,7 +149,7 @@ window.openAppDetails = (name, icon, link, desc, id, updateHistory = true) => {
                 <div class="description-body" style="border-radius:20px;">
                     ${formattedDesc}
                 </div>
-                ${auth.currentUser?.email === ADMIN_EMAIL ? 
+                ${isAdmin ? 
                     `<div style="margin-top:40px; padding-top:30px; border-top:1px solid rgba(255,255,255,0.1); display:flex; gap:15px; justify-content:center;">
                         <button onclick="editExistingApp('${id}', '${encodeURIComponent(name)}', '${encodeURIComponent(icon)}', '${encodeURIComponent(link)}', '${encodeURIComponent(desc)}')" style="background:#f97316; color:white; border:none; padding:12px 25px; border-radius:15px; font-weight:700; cursor:pointer;">✏️ Edit Mod</button>
                         <button onclick="deleteAppConfirm()" style="background:rgba(239, 68, 68, 0.1); color:#ef4444; border:1px solid #ef4444; padding:12px 25px; border-radius:15px; font-weight:700; cursor:pointer;">🗑️ Delete</button>
@@ -182,6 +200,15 @@ window.editExistingApp = (id, name, icon, link, desc) => {
     };
 };
 
+window.deleteAppConfirm = () => {
+    if (!selectedAppId) return;
+    if (!confirm("Delete this app from the database?")) return;
+    deleteDoc(doc(db, "apps", selectedAppId)).then(() => {
+        goBack();
+        loadApps();
+    }).catch(e => console.error(e));
+};
+
 window.goBack = (updateHistory = true) => {
     if (updateHistory) window.history.pushState({}, "SmArT  AStro HuB", "/");
     document.getElementById('main-view').style.display = 'block';
@@ -195,13 +222,8 @@ window.openPrivacy = (updateHistory = true) => {
     document.getElementById('dynamic-content').innerHTML = `
         <div class="glass" style="padding:30px; border-radius:20px; text-align:left; line-height:1.6;">
             <h1 style="color:#f97316; font-size:28px; margin-bottom:15px; text-align:center;">🔒 Privacy & Safety</h1>
-            <p style="color:#eee; margin-bottom:20px; text-align:center;">Welcome to <b>SmArT  AStro HuB</b>! We want you to feel safe while downloading your favorite apps.</p>
-            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">1. We Respect Your Privacy</h3><ul style="color:#ccc; padding-left:20px;"><li>We don't ask for your name, phone number, address or any other things to download apps.</li><li>If you are just a visitor, we don't collect any personal secrets about you.</li></ul></div>
-            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">2. About Mod Apps (Important!)</h3><ul style="color:#ccc; padding-left:20px;"><li>We share Mod APKs so you can enjoy premium features for free.</li><li><b>Please Note:</b> These Mods are made by other developers, not by us.</li><li>We find these mods on the internet and share them with you. Because we didn't make them, we cannot give a 100% guarantee of how they work.</li></ul></div>
-            <div style="margin-bottom:15px;"><h3 style="color:#ef4444;">3. Use at Your Own Risk</h3><ul style="color:#ccc; padding-left:20px;"><li>If a Mod app causes any problem with your phone, game account ban, or anything happens, <b>SmArT  AStro HuB will not be responsible</b>.</li><li>We recommend using Mods on a "guest account" or a secondary phone for extra safety.</li></ul></div>
-            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">4. We Also Provide Original Apps</h3><ul style="color:#ccc; padding-left:20px;"><li>For your 100% safety, we also provide Official/Original APKs.</li><li>These original files are untouched and come directly from safe sources.</li></ul></div>
-            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">5. Links to Other Places</h3><ul style="color:#ccc; padding-left:20px;"><li>Sometimes you will see links to Telegram or other download websites.</li><li>Once you click those links and leave our site, we don't have control over what happens there. Please be careful on other websites.</li></ul></div>
-            <div style="margin-top:20px; border-top: 1px solid #333; padding-top:10px;"><p style="font-size:13px; color:#9ca3af;"><b>Consent:</b> By using SmArT  AStro HuB, you agree that you understand these points and you are okay with the risks of using Mod apps.</p></div>
+            <p style="color:#eee; margin-bottom:20px; text-align:center;">Welcome to <b>SmArT  AStro HuB</b>!</p>
+            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">1. We Respect Your Privacy</h3><ul style="color:#ccc; padding-left:20px;"><li>We don't ask for your personal info.</li></ul></div>
             <button onclick="goBack()" class="action-btn" style="max-width:150px; margin-top:20px; display:block; margin-left:auto; margin-right:auto;">I Understand</button>
         </div>`;
 };
@@ -213,12 +235,8 @@ window.openTerms = (updateHistory = true) => {
     document.getElementById('dynamic-content').innerHTML = `
         <div class="glass" style="padding:30px; border-radius:20px; text-align:left; line-height:1.6;">
             <h1 style="color:#f97316; font-size:28px; margin-bottom:15px; text-align:center;">📜 Terms & Conditions</h1>
-            <p style="color:#eee; margin-bottom:20px; text-align:center;">By using <b>SmArT  AStro HuB</b>, you agree to follow these simple rules. If you don't agree, please do not use our website.</p>
-            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">1. Educational Purpose Only</h3><ul style="color:#ccc; padding-left:20px;"><li>Everything we share here (Apps and Mods) is for learning and testing purposes only.</li><li>We want users to see how premium features work before they buy official subscriptions.</li></ul></div>
-            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">2. Respect Original Creators</h3><ul style="color:#ccc; padding-left:20px;"><li>We do not own any of these apps. All rights and credit go to the original developers.</li><li>If you like an app, we always suggest you download it from the official store to support the creators.</li></ul></div>
-            <div style="margin-bottom:15px;"><h3 style="color:#ef4444;">3. No Guarantee</h3><ul style="color:#ccc; padding-left:20px;"><li>We try our best to provide working files, but we cannot promise that every app will work on every phone.</li><li>Apps are provided "as is" – meaning we don't change them ourselves.</li></ul></div>
-            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">4. Fair Use</h3><ul style="color:#ccc; padding-left:20px;"><li>You agree not to use our website for any illegal activities.</li><li>You are responsible for any app you download and how you use it on your device.</li></ul></div>
-            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">5. Changes to Site</h3><ul style="color:#ccc; padding-left:20px;"><li>We can add, remove, or update any app or rule on this site at any time without asking anyone.</li></ul></div>
+            <p style="color:#eee; margin-bottom:20px; text-align:center;">By using <b>SmArT  AStro HuB</b>, you agree to follow these simple rules.</p>
+            <div style="margin-bottom:15px;"><h3 style="color:#8b5cf6;">1. Educational Purpose Only</h3><ul style="color:#ccc; padding-left:20px;"><li>Everything we share here is for testing purposes only.</li></ul></div>
             <button onclick="goBack()" class="action-btn" style="max-width:150px; margin-top:20px; display:block; margin-left:auto; margin-right:auto;">Accept Rules</button>
         </div>`;
 };
@@ -230,11 +248,8 @@ window.openDMCA = (updateHistory = true) => {
     document.getElementById('dynamic-content').innerHTML = `
         <div class="glass" style="padding:30px; border-radius:20px; text-align:left; line-height:1.6;">
             <h1 style="color:#f97316; font-size:28px; text-align:center; margin-bottom:15px;">⚖️ Copyright DMCA</h1>
-            <p style="color:#eee; margin-bottom:15px;">At <b>SmArT  AStro HuB</b>, we respect the hard work of original creators and copyright owners. We do not want to keep any file on our site that breaks copyright laws.</p>
-            <h3 style="color:#8b5cf6;">1. Notice to Copyright Owners</h3><p style="color:#ccc;">• All the apps and files shared on this website are collected from different places on the internet.<br>• We do not host these files on our own main server in most cases; we only provide links.</p>
-            <h3 style="color:#8b5cf6; margin-top:15px;">2. How to Request Removal?</h3><p style="color:#ccc;">• If you are the owner of an app and you don't want it to be on our site, please don't strike us directly.<br>• Just send us a simple email at: <b>a4anandg2@gmail.com</b>.</p>
-            <h3 style="color:#8b5cf6; margin-top:15px;">3. What to Include in Your Email?</h3><p style="color:#ccc;">• Your name and the name of your app.<br>• The link to the page on our site where your app is listed.<br>• Proof that you are the real owner.</p>
-            <h3 style="color:#ef4444; margin-top:15px;">4. Our Action</h3><p style="color:#ccc;">• Once we get your email and verify it, we will remove the requested content within <b>24 to 48 hours</b>. We believe in peaceful cooperation with developers.</p>
+            <p style="color:#eee; margin-bottom:15px;">At <b>SmArT  AStro HuB</b>, we respect original creators.</p>
+            <h3 style="color:#8b5cf6;">Contact</h3><p style="color:#ccc;">Email us at: <b>a4anandg2@gmail.com</b></p>
             <button onclick="goBack()" class="action-btn" style="max-width:150px; margin-top:20px; display:block; margin: 0 auto;">Close</button>
         </div>`;
 };
