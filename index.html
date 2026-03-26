@@ -4,46 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#09090b">
-    <title>SmArT AStro HuB 🚀 | Download Safe & Verified Premium APKs</title>
-    <meta name="description" content="Get 100% safe, verified, and ad-free premium APKs. SmArT AStro HuB is the leading marketplace for secure Android mods and premium mobile tools.">
-    <meta name="keywords" content="premium apk, mod apk, verified apps, safe download, android mods, smart astro hub, pro apps">
+    
+    <title>SmArT AStro HuB 🚀 | Safe & Verified Premium APKs Store</title>
+    <meta name="description" content="Discover and download 100% safe, verified, ad-free premium APKs and mods. SmArT AStro HuB offers fast downloads, secure apps, and the latest mobile tools.">
+    <meta name="keywords" content="premium apk, mod apk, verified apps, download safe apk, android mods, smart astro hub">
     <meta name="author" content="SmArT AStro HuB">
+
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://astroapkhub.in/">
-    <meta property="og:title" content="SmArT AStro HuB 🚀 | Safe & Verified Premium APKs">
-    <meta property="og:description" content="Download 100% verified, ad-free premium APKs. Fast, secure, and updated daily.">
+    <meta property="og:title" content="SmArT AStro HuB 🚀 | Premium APKs Store">
+    <meta property="og:description" content="Download 100% verified, ad-free premium APKs. Fast, secure, and always updated.">
     <meta property="og:image" content="https://astroapkhub.in/favicon.png">
+
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://astroapkhub.in/">
     <meta property="twitter:title" content="SmArT AStro HuB 🚀 | Premium Mods">
-    <meta property="twitter:description" content="Trusted marketplace for Secure & Verified Premium APKs.">
+    <meta property="twitter:description" content="Download Safe & Verified Premium APKs. Your trusted app marketplace.">
     <meta property="twitter:image" content="https://astroapkhub.in/favicon.png">
+
     <link rel="canonical" href="https://astroapkhub.in/" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="favicon.png">
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
+      "@type": "WebSite",
       "name": "SmArT AStro HuB",
-      "operatingSystem": "ANDROID",
-      "applicationCategory": "AppStore",
       "url": "https://astroapkhub.in/",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "1250"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0.00",
-        "priceCurrency": "USD"
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://astroapkhub.in/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
       }
     }
     </script>
+
     <script>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -55,16 +55,18 @@
             <h1 class="nav-logo" onclick="window.location.href='/'" tabindex="0" aria-label="Home">
                 <span class="logo-icon">🚀</span> Astro Hub
             </h1>
+ 
             <div class="search-wrapper">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" id="main-search" placeholder="Search Games, Apps, Mods..." aria-label="Search Applications">
+                <input type="text" id="main-search" placeholder="Games, Apps, Mods..." onkeyup="filterApps()" aria-label="Search Applications">
             </div>
+
             <div class="user-auth">
                 <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="user-avatar" alt="User Menu" onclick="toggleDropdown(event)">
                 <div id="user-menu" class="dropdown-menu blur-bg">
                     <div id="admin-controls" style="display:none;">
                         <button onclick="openAdminPanel()">✨ Publish App</button>
-                        <button onclick="generateSitemap()">🗺️ Sitemap</button>
+                        <button onclick="generateSitemap()">🗺️ Generate Sitemap</button>
                         <div class="divider"></div>
                         <button onclick="logout()" class="text-danger">Log Out</button>
                     </div>
@@ -79,10 +81,11 @@
     <main id="main-view">
         <header class="store-hero container">
             <div class="hero-content">
-                <h2 class="hero-title">Premium <span class="gradient-text">Android Apps</span> <br>Simplified.</h2>
-                <p class="hero-subtitle">Fast, secure, and 100% verified mods tailored for your device.</p>
+                <h2 class="hero-title">Discover the Best <br><span class="gradient-text">Premium Apps</span></h2>
+                <p class="hero-subtitle">Fast, secure, and 100% verified mods tailored for your Android device.</p>
             </div>
         </header>
+
         <section class="container filter-section">
             <div class="categories-slider">
                 <button class="cat-chip active">For You</button>
@@ -92,50 +95,40 @@
                 <button class="cat-chip">Editors' Choice</button>
             </div>
         </section>
+
         <section class="container main-content">
             <div class="section-header">
                 <h3 class="section-title">Trending Now</h3>
                 <button class="btn-text">See All</button>
             </div>
+            
             <div class="app-grid" id="app-list" aria-live="polite">
                 <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
-            </div>
-        </section>
-        <section class="container" style="margin-top: 40px;">
-            <div class="section-header">
-                <h3 class="section-title">Community Guestbook</h3>
-            </div>
-            <div class="blur-bg guestbook-card">
-                <div class="comment-input-wrap">
-                    <input type="text" id="home-comment-user" placeholder="Your Name" class="input-field">
-                    <textarea id="home-comment-text" placeholder="Share your feedback..." class="input-field" style="min-height:80px;"></textarea>
-                    <button class="btn-primary" onclick="window.postGlobalComment()">Post Message</button>
-                </div>
-                <div id="home-comments-list" class="comments-list"></div>
             </div>
         </section>
     </main>
 
     <main id="details-view" class="container" style="display:none;">
         <nav class="back-nav">
-            <button onclick="goBack()" class="btn-back">
+            <button onclick="goBack()" class="btn-back" aria-label="Go Back">
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg> Back
             </button>
         </nav>
-        <article id="dynamic-content"></article>
+        <article id="dynamic-content">
+            </article>
     </main>
-
+   
     <footer class="app-footer">
         <div class="container footer-grid">
             <div class="footer-brand">
                 <h2>🚀 SmArT AStro HuB</h2>
-                <p>Trusted marketplace for secure, premium Android experiences since 2024.</p>
+                <p>Your trusted marketplace for secure, premium Android experiences.</p>
             </div>
             <div class="footer-links">
-                <a href="https://t.me/+IQLcSRo_2y5mZGVl" target="_blank">Telegram</a>
-                <a href="mailto:a4anandg2@gmail.com">Support</a>
-                <a href="#" onclick="openPrivacy()">Privacy</a>
-                <a href="#" onclick="openTerms()">Terms</a>
+                <a href="https://t.me/+IQLcSRo_2y5mZGVl" target="_blank">Telegram Community</a>
+                <a href="mailto:a4anandg2@gmail.com">Developer Support</a>
+                <a href="#" onclick="openPrivacy()">Privacy Policy</a>
+                <a href="#" onclick="openTerms()">Terms of Service</a>
                 <a href="#" onclick="openDMCA()">DMCA</a>
             </div>
         </div>
@@ -146,23 +139,41 @@
 
     <div id="admin-modal" class="modal-overlay">
         <div class="modal-box blur-bg">
-            <button onclick="closeAdmin()" class="btn-close">&times;</button>
+            <button onclick="closeAdmin()" class="btn-close" aria-label="Close">&times;</button>
             <h2 class="modal-title">Publish App</h2>
             <div class="form-group">
-                <input type="text" id="new-app-name" class="input-field" placeholder="App Name">
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="new-app-rating" class="input-field" placeholder="Rating (4.9)">
-                    <input type="text" id="new-app-size" class="input-field" placeholder="Size (15MB)">
-                </div>
-                <input type="url" id="new-app-icon" class="input-field" placeholder="Icon URL">
-                <input type="url" id="new-app-link" class="input-field" placeholder="Download Link">
-                <textarea id="new-app-desc" class="input-field text-area" placeholder="Description..."></textarea>
+                <input type="text" id="new-app-name" class="input-field" placeholder="Application Name">
+                <input type="url" id="new-app-icon" class="input-field" placeholder="App Icon URL (Square recommended)">
+                <input type="url" id="new-app-link" class="input-field" placeholder="Direct Download Link">
+                <textarea id="new-app-desc" class="input-field text-area" placeholder="Write release notes & mod features..."></textarea>
             </div>
-            <button class="btn-primary w-100" id="admin-submit-btn" onclick="addNewApp()">Publish to Store</button>
+            <button class="btn-primary w-100 mt-3" onclick="addNewApp()">Publish to Store</button>
         </div>
     </div>
 
+    <script>
+        function loadAds() {
+            if (window.adsLoaded) return;
+            window.adsLoaded = true;
+            var s = document.createElement('script');
+            s.src = 'https://3nbf4.com/act/files/tag.min.js?z=10583984';
+            s.dataset.cfasync = 'false';
+            s.async = true;
+            document.body.appendChild(s);
+            var v = document.createElement('script');
+            v.dataset.zone = '10584232';
+            v.src = 'https://gizokraijaw.net/vignette.min.js';
+            document.body.appendChild(v);
+        }
+        window.addEventListener('scroll', loadAds, {once: true});
+        window.addEventListener('touchstart', loadAds, {once: true});
+    </script>
+
     <script type="module" src="/script.js"></script>
+
+    <script>
+      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+    </script>
     <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
