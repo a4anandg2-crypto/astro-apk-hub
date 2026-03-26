@@ -7,7 +7,7 @@
     
     <title>SmArT AStro HuB 🚀 | Safe & Verified Premium APKs Store</title>
     <meta name="description" content="Discover and download 100% safe, verified, ad-free premium APKs and mods. SmArT AStro HuB offers fast downloads, secure apps, and the latest mobile tools.">
-    <meta name="keywords" content="premium apk, mod apk, verified apps, download safe apk, android mods, smart astro hub">
+    <meta name="keywords" content="premium apk, mod apk, verified apps, download safe apk, android mods, smart astro hub, free premium apps">
     <meta name="author" content="SmArT AStro HuB">
 
     <meta property="og:type" content="website">
@@ -25,7 +25,7 @@
     <link rel="canonical" href="https://astroapkhub.in/" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="favicon.png">
@@ -43,26 +43,21 @@
       }
     }
     </script>
-
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
     <nav class="app-nav blur-header">
         <div class="container nav-flex">
-            <h1 class="nav-logo" onclick="window.location.href='/'" tabindex="0" aria-label="Home">
+            <h1 class="nav-logo" onclick="window.location.href='/'" tabindex="0" aria-label="Astro Hub Home">
                 <span class="logo-icon">🚀</span> Astro Hub
             </h1>
  
             <div class="search-wrapper">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" id="main-search" placeholder="Games, Apps, Mods..." onkeyup="filterApps()" aria-label="Search Applications">
+                <input type="text" id="main-search" placeholder="Search Games, Apps, Mods..." onkeyup="filterApps()" aria-label="Search Applications">
             </div>
 
             <div class="user-auth">
-                <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="user-avatar" alt="User Menu" onclick="toggleDropdown(event)">
+                <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="user-avatar" alt="User Profile" onclick="toggleDropdown(event)">
                 <div id="user-menu" class="dropdown-menu blur-bg">
                     <div id="admin-controls" style="display:none;">
                         <button onclick="openAdminPanel()">✨ Publish App</button>
@@ -87,12 +82,12 @@
         </header>
 
         <section class="container filter-section">
-            <div class="categories-slider">
-                <button class="cat-chip active">For You</button>
-                <button class="cat-chip">Top Charts</button>
-                <button class="cat-chip">Premium Mods</button>
-                <button class="cat-chip">Productivity</button>
-                <button class="cat-chip">Editors' Choice</button>
+            <div class="categories-slider" role="tablist">
+                <button class="cat-chip active" role="tab">For You</button>
+                <button class="cat-chip" role="tab">Top Charts</button>
+                <button class="cat-chip" role="tab">Premium Mods</button>
+                <button class="cat-chip" role="tab">Productivity</button>
+                <button class="cat-chip" role="tab">Editors' Choice</button>
             </div>
         </section>
 
@@ -104,6 +99,21 @@
             
             <div class="app-grid" id="app-list" aria-live="polite">
                 <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+                <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+            </div>
+        </section>
+
+        <section class="container community-section">
+            <div class="section-header">
+                <h3 class="section-title">Community Feedback</h3>
+            </div>
+            <div class="blur-bg feedback-container">
+                <div class="comment-input-wrap">
+                    <input type="text" id="home-comment-user" placeholder="Your Name" class="input-field">
+                    <textarea id="home-comment-text" placeholder="Share your experience with the community..." class="input-field"></textarea>
+                    <button class="btn-primary" onclick="window.postGlobalComment()">Send Feedback</button>
+                </div>
+                <div id="home-comments-list" class="comments-list"></div>
             </div>
         </section>
     </main>
@@ -114,22 +124,22 @@
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg> Back
             </button>
         </nav>
-        <article id="dynamic-content">
-            </article>
+        <article id="dynamic-content"></article>
     </main>
    
     <footer class="app-footer">
         <div class="container footer-grid">
             <div class="footer-brand">
                 <h2>🚀 SmArT AStro HuB</h2>
-                <p>Your trusted marketplace for secure, premium Android experiences.</p>
+                <p>Your trusted marketplace for secure, premium Android experiences. Verified by community experts.</p>
             </div>
             <div class="footer-links">
-                <a href="https://t.me/+IQLcSRo_2y5mZGVl" target="_blank">Telegram Community</a>
+                <h4 style="margin-bottom: 10px; font-size: 16px;">Quick Links</h4>
+                <a href="https://t.me/+IQLcSRo_2y5mZGVl" target="_blank" rel="noopener">Telegram Community</a>
                 <a href="mailto:a4anandg2@gmail.com">Developer Support</a>
                 <a href="#" onclick="openPrivacy()">Privacy Policy</a>
                 <a href="#" onclick="openTerms()">Terms of Service</a>
-                <a href="#" onclick="openDMCA()">DMCA</a>
+                <a href="#" onclick="openDMCA()">DMCA Compliance</a>
             </div>
         </div>
         <div class="footer-bottom container">
@@ -139,15 +149,27 @@
 
     <div id="admin-modal" class="modal-overlay">
         <div class="modal-box blur-bg">
-            <button onclick="closeAdmin()" class="btn-close" aria-label="Close">&times;</button>
-            <h2 class="modal-title">Publish App</h2>
+            <button onclick="closeAdmin()" class="btn-close" aria-label="Close Modal">&times;</button>
+            <h2 class="modal-title">Publish Application</h2>
             <div class="form-group">
                 <input type="text" id="new-app-name" class="input-field" placeholder="Application Name">
-                <input type="url" id="new-app-icon" class="input-field" placeholder="App Icon URL (Square recommended)">
+                <div class="input-row">
+                    <input type="text" id="new-app-rating" class="input-field" placeholder="Rating (e.g. 4.9)">
+                    <input type="text" id="new-app-size" class="input-field" placeholder="Size (e.g. 15MB)">
+                </div>
+                <input type="url" id="new-app-icon" class="input-field" placeholder="App Icon URL">
                 <input type="url" id="new-app-link" class="input-field" placeholder="Direct Download Link">
-                <textarea id="new-app-desc" class="input-field text-area" placeholder="Write release notes & mod features..."></textarea>
+                <textarea id="new-app-desc" class="input-field text-area" placeholder="Mod Features & Description..."></textarea>
+                
+                <div class="approval-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="auto-approve-toggle" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <span>Auto-Approve User Comments</span>
+                </div>
             </div>
-            <button class="btn-primary w-100 mt-3" onclick="addNewApp()">Publish to Store</button>
+            <button class="btn-primary w-100 mt-3" id="admin-submit-btn" onclick="addNewApp()">Publish to Store</button>
         </div>
     </div>
 
@@ -157,23 +179,16 @@
             window.adsLoaded = true;
             var s = document.createElement('script');
             s.src = 'https://3nbf4.com/act/files/tag.min.js?z=10583984';
-            s.dataset.cfasync = 'false';
-            s.async = true;
+            s.dataset.cfasync = 'false'; s.async = true;
             document.body.appendChild(s);
             var v = document.createElement('script');
-            v.dataset.zone = '10584232';
-            v.src = 'https://gizokraijaw.net/vignette.min.js';
+            v.dataset.zone = '10584232'; v.src = 'https://gizokraijaw.net/vignette.min.js';
             document.body.appendChild(v);
         }
         window.addEventListener('scroll', loadAds, {once: true});
         window.addEventListener('touchstart', loadAds, {once: true});
     </script>
-
     <script type="module" src="/script.js"></script>
-
-    <script>
-      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/speed-insights/script.js"></script>
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
