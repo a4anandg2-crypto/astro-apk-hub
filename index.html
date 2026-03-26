@@ -18,133 +18,92 @@
 
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://astroapkhub.in/">
-    <meta property="twitter:title" content="SmArT AStro HuB 🚀 | Premium Mods">
-    <meta property="twitter:description" content="Download Safe & Verified Premium APKs. Your trusted app marketplace.">
+    <meta property="twitter:title" content="SmArT AStro HuB 🚀 | Premium APKs Store">
+    <meta property="twitter:description" content="Download 100% verified, ad-free premium APKs. Fast, secure, and always updated.">
     <meta property="twitter:image" content="https://astroapkhub.in/favicon.png">
 
-    <link rel="canonical" href="https://astroapkhub.in/" />
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="/style.css">
-    <link rel="icon" type="image/png" href="favicon.png">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "SmArT AStro HuB",
-      "url": "https://astroapkhub.in/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://astroapkhub.in/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
-
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415711674391262" crossorigin="anonymous"></script>
 </head>
 <body>
-    <nav class="app-nav blur-header">
-        <div class="container nav-flex">
-            <h1 class="nav-logo" onclick="window.location.href='/'" tabindex="0" aria-label="Home">
-                <span class="logo-icon">🚀</span> Astro Hub
-            </h1>
- 
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo" onclick="event.preventDefault(); location.reload();">
+                <span class="logo-icon">🚀</span>
+                <span class="logo-text">SmArT AStro HuB</span>
+            </a>
+            
             <div class="search-wrapper">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" id="main-search" placeholder="Games, Apps, Mods..." onkeyup="filterApps()" aria-label="Search Applications">
+                <input type="text" id="app-search" placeholder="Search apps, games, mods..." oninput="searchApps()">
+                <span class="search-icon">🔍</span>
             </div>
 
-            <div class="user-auth">
-                <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="user-avatar" alt="User Menu" onclick="toggleDropdown(event)">
-                <div id="user-menu" class="dropdown-menu blur-bg">
-                    <div id="admin-controls" style="display:none;">
-                        <button onclick="openAdminPanel()">✨ Publish App</button>
-                        <button onclick="generateSitemap()">🗺️ Generate Sitemap</button>
-                        <div class="divider"></div>
-                        <button onclick="logout()" class="text-danger">Log Out</button>
-                    </div>
-                    <div id="guest-controls">
-                        <button onclick="loginWithGoogle()">Admin Login</button>
-                    </div>
+            <div class="nav-actions">
+                <button id="admin-login-btn" class="btn-icon" title="Admin Login">🔑</button>
+                <div id="admin-menu" class="admin-dropdown">
+                    <button onclick="openAdminPanel()">➕ Publish App</button>
+                    <button onclick="window.generateSitemap()">🗺️ Sitemap</button>
+                    <button onclick="window.handleLogout()">🚪 Logout</button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main id="main-view">
-        <header class="store-hero container">
-            <div class="hero-content">
-                <h2 class="hero-title">Discover the Best <br><span class="gradient-text">Premium Apps</span></h2>
-                <p class="hero-subtitle">Fast, secure, and 100% verified mods tailored for your Android device.</p>
-            </div>
+    <main class="store-container">
+        <header class="store-hero">
+            <h1 class="hero-title">Premium Apps. <span class="text-gradient">Zero Ads.</span></h1>
+            <p class="hero-subtitle">100% Secure & Verified Android Applications</p>
         </header>
 
-        <section class="container filter-section">
-            <div class="categories-slider">
-                <button class="cat-chip active">For You</button>
-                <button class="cat-chip">Top Charts</button>
-                <button class="cat-chip">Premium Mods</button>
-                <button class="cat-chip">Productivity</button>
-                <button class="cat-chip">Editors' Choice</button>
+        <section id="main-view">
+            <div id="app-list" class="app-grid">
+                <div class="loading-spinner"></div>
             </div>
         </section>
 
-        <section class="container main-content">
-            <div class="section-header">
-                <h3 class="section-title">Trending Now</h3>
-                <button class="btn-text">See All</button>
-            </div>
-            
-            <div class="app-grid" id="app-list" aria-live="polite">
-                <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
-            </div>
+        <section id="detail-view" style="display: none;">
+            <button class="btn-back" onclick="closeAppDetails()">← Back to Store</button>
+            <div id="dynamic-content"></div>
         </section>
     </main>
 
-    <main id="details-view" class="container" style="display:none;">
-        <nav class="back-nav">
-            <button onclick="goBack()" class="btn-back" aria-label="Go Back">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg> Back
-            </button>
-        </nav>
-        <article id="dynamic-content">
-            </article>
-    </main>
-   
-    <footer class="app-footer">
-        <div class="container footer-grid">
+    <footer class="main-footer">
+        <div class="footer-grid">
             <div class="footer-brand">
-                <h2>🚀 SmArT AStro HuB</h2>
-                <p>Your trusted marketplace for secure, premium Android experiences.</p>
+                <h3>SmArT AStro HuB</h3>
+                <p>Your ultimate destination for verified premium APKs. Fast, secure, and always updated.</p>
             </div>
             <div class="footer-links">
-                <a href="https://t.me/+IQLcSRo_2y5mZGVl" target="_blank">Telegram Community</a>
-                <a href="mailto:a4anandg2@gmail.com">Developer Support</a>
-                <a href="#" onclick="openPrivacy()">Privacy Policy</a>
-                <a href="#" onclick="openTerms()">Terms of Service</a>
-                <a href="#" onclick="openDMCA()">DMCA</a>
+                <h4>Legal</h4>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/dmca">DMCA Disclaimer</a>
             </div>
         </div>
-        <div class="footer-bottom container">
-            <p>&copy; 2026 SmArT AStro HuB. All rights reserved.</p>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SmArT AStro HuB. Built with ❤️ for Android Users.</p>
         </div>
     </footer>
 
     <div id="admin-modal" class="modal-overlay">
-        <div class="modal-box blur-bg">
-            <button onclick="closeAdmin()" class="btn-close" aria-label="Close">&times;</button>
-            <h2 class="modal-title">Publish App</h2>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Publish App</h2>
+                <button class="btn-close" onclick="closeAdmin()">×</button>
+            </div>
             <div class="form-group">
                 <input type="text" id="new-app-name" class="input-field" placeholder="Application Name">
                 <input type="url" id="new-app-icon" class="input-field" placeholder="App Icon URL (Square recommended)">
                 <input type="url" id="new-app-link" class="input-field" placeholder="Direct Download Link">
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="new-app-rating" class="input-field" placeholder="Rating (e.g. 4.5)" step="0.1" min="0" max="5" style="flex: 1;">
+                    <input type="text" id="new-app-size" class="input-field" placeholder="Size (e.g. 15 MB)" style="flex: 1;">
+                </div>
                 <textarea id="new-app-desc" class="input-field text-area" placeholder="Write release notes & mod features..."></textarea>
             </div>
             <button class="btn-primary w-100 mt-3" onclick="addNewApp()">Publish to Store</button>
@@ -170,10 +129,5 @@
     </script>
 
     <script type="module" src="/script.js"></script>
-
-    <script>
-      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
