@@ -1,6 +1,11 @@
+/**
+ * Astro APK Hub - Optimized Core Logic
+ * Performance: Refactored with Event Delegation, Throttling, and Memory Management
+ */
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCiIYUWBTr3__sQo--g6dWvMIxDjqC7r0o",
@@ -15,91 +20,158 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// State
 let allApps = [];
 const ADMIN_EMAILS = ["a4anandg2@gmail.com", "per149209@gmail.com"];
 
-// --- State Management ---
-onAuthStateChanged(auth, (user) => {
-    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
-    document.getElementById('admin-controls').style.display = isAdmin ? 'block' : 'none';
-    document.getElementById('guest-controls').style.display = isAdmin ? 'none' : 'block';
-    if(user) document.getElementById('user-photo').src = user.photoURL;
-});
-
-// --- Content Handlers ---
-async function loadApps() {
-    const snap = await getDocs(collection(db, "apps"));
-    allApps = snap.docs.map(d => ({id: d.id, ...d.data()}));
-    renderApps(allApps);
-    loadComments('global_comments', 'global');
+/**
+ * Performance: Throttling for Search
+ */
+function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
 }
 
-window.renderApps = (data) => {
-    const list = document.getElementById('app-list');
-    list.innerHTML = data.map(app => `
-        <article class="app-card" onclick="openAppDetails('${app.name}', '${app.icon}', '${app.link}', '${encodeURIComponent(app.description)}', '${app.id}', '${app.rating || '4.8'}', '${app.size || 'Varies'}')">
-            <img src="${app.icon}" class="app-icon" loading="lazy">
+/**
+ * DOM Elements Cache (Memory Optimization)
+ */
+const UI = {
+    appList: document.getElementById('app-list'),
+    mainView: document.getElementById('main-view'),
+    detailsView: document.getElementById('details-view'),
+    dynamicContent: document.getElementById('dynamic-content'),
+    search: document.getElementById('main-search'),
+    adminControls: document.getElementById('admin-controls'),
+    guestControls: document.getElementById('guest-controls'),
+    userPhoto: document.getElementById('user-photo'),
+    userMenu: document.getElementById('user-menu'),
+    adminModal: document.getElementById('admin-modal'),
+    commentsList: document.getElementById('home-comments-list')
+};
+
+/**
+ * Authentication & State
+ */
+onAuthStateChanged(auth, (user) => {
+    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
+    UI.adminControls.style.display = isAdmin ? 'block' : 'none';
+    UI.guestControls.style.display = isAdmin ? 'none' : 'block';
+    if(user) UI.userPhoto.src = user.photoURL;
+});
+
+/**
+ * UI Rendering (Optimized Fragment Injection)
+ */
+const renderApps = (data) => {
+    if (!data.length) {
+        UI.appList.innerHTML = `<p style="text-align:center; grid-column:1/-1; padding:40px; color:var(--text-secondary);">No apps found matching your search.</p>`;
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    data.forEach(app => {
+        const card = document.createElement('article');
+        card.className = 'app-card';
+        card.innerHTML = `
+            <img src="${app.icon}" class="app-icon" loading="lazy" alt="${app.name}">
             <div class="app-info">
                 <div class="app-name">${app.name}</div>
                 <div class="app-meta">${app.size || 'Premium'} • Safe Build</div>
             </div>
             <button class="btn-get">GET</button>
             <div class="badge-rating">${app.rating || '4.8'} ★</div>
-        </article>
-    `).join('');
+        `;
+        card.addEventListener('click', () => openAppDetails(app));
+        fragment.appendChild(card);
+    });
+
+    UI.appList.innerHTML = '';
+    UI.appList.appendChild(fragment);
 };
 
-window.openAppDetails = (name, icon, link, desc, id, rating, size) => {
-    document.getElementById('main-view').style.display = 'none';
-    const dv = document.getElementById('details-view');
-    dv.style.display = 'block';
-    window.scrollTo(0, 0);
+/**
+ * Data Fetching (Optimized)
+ */
+async function loadData() {
+    try {
+        const snap = await getDocs(query(collection(db, "apps"), orderBy("name")));
+        allApps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderApps(allApps);
+        loadGlobalComments();
+    } catch (e) {
+        console.error("Fetch Error:", e);
+    }
+}
+
+/**
+ * Navigation Logic
+ */
+const openAppDetails = (app) => {
+    UI.mainView.style.display = 'none';
+    UI.detailsView.style.display = 'block';
+    UI.detailsView.setAttribute('aria-hidden', 'false');
+    window.scrollTo({ top: 0, behavior: 'instant' });
 
     const isAdmin = auth.currentUser && ADMIN_EMAILS.includes(auth.currentUser.email);
-    const decodedDesc = decodeURIComponent(desc);
 
-    document.getElementById('dynamic-content').innerHTML = `
+    UI.dynamicContent.innerHTML = `
         <div class="detail-header">
-            <img src="${icon}" class="detail-icon">
+            <img src="${app.icon}" class="detail-icon" alt="${app.name}">
             <div class="detail-content">
-                <h1 class="detail-title">${name}</h1>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">${size} • Verified Mod • Safe & Secure</p>
-                <button id="dl-btn" class="btn-primary">Download (Direct Link)</button>
+                <h1 class="detail-title">${app.name}</h1>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">${app.size || 'Varies'} • Verified Mod • Safe & Secure</p>
+                <button id="dl-trigger" class="btn-primary">Download (Direct Link)</button>
                 <div id="prog-box" class="progress-box"><div id="prog-fill" class="progress-fill"></div></div>
                 
                 ${isAdmin ? `
                 <div class="admin-actions">
-                    <button class="btn-outline" onclick="editApp('${id}')">Edit</button>
-                    <button class="btn-outline" style="color:var(--danger);" onclick="deleteApp('${id}')">Delete</button>
+                    <button class="btn-outline" id="admin-edit">Edit App</button>
+                    <button class="btn-outline" style="color:var(--danger);" id="admin-delete">Delete</button>
                 </div>
                 ` : ''}
             </div>
         </div>
         <div class="app-description" style="margin-top:40px;">
-            <h3>Description & Features</h3>
-            <div style="margin-top:15px; color:var(--text-secondary);">${decodedDesc}</div>
+            <h3 style="margin-bottom:16px;">Description & Features</h3>
+            <div style="color:var(--text-secondary); white-space: pre-line;">${app.description}</div>
         </div>
     `;
 
-    document.getElementById('dl-btn').onclick = () => {
-        const prog = document.getElementById('prog-box');
+    // Internal detail view listeners
+    document.getElementById('dl-trigger').addEventListener('click', function() {
         const fill = document.getElementById('prog-fill');
-        const btn = document.getElementById('dl-btn');
-        btn.style.display = 'none';
-        prog.style.display = 'block';
-        let width = 0;
-        const interval = setInterval(() => {
-            width += Math.random() * 8;
-            if(width >= 100) {
-                clearInterval(interval);
-                window.location.href = link;
+        const box = document.getElementById('prog-box');
+        this.style.display = 'none';
+        box.style.display = 'block';
+        
+        let w = 0;
+        const iv = setInterval(() => {
+            w += Math.random() * 15;
+            if(w >= 100) {
+                clearInterval(iv);
+                window.location.href = app.link;
             }
-            fill.style.width = width + '%';
-        }, 100);
-    };
+            fill.style.width = Math.min(w, 100) + '%';
+        }, 80);
+    });
+
+    if(isAdmin) {
+        document.getElementById('admin-delete').onclick = () => deleteApp(app.id);
+        document.getElementById('admin-edit').onclick = () => prepareEdit(app);
+    }
 };
 
-window.addNewApp = async () => {
+/**
+ * Admin Logic
+ */
+async function addNewApp() {
+    const btn = document.getElementById('admin-submit-btn');
+    btn.disabled = true;
+    btn.innerText = "Processing...";
+
     const data = {
         name: document.getElementById('new-app-name').value,
         rating: document.getElementById('new-app-rating').value,
@@ -108,41 +180,119 @@ window.addNewApp = async () => {
         link: document.getElementById('new-app-link').value,
         description: document.getElementById('new-app-desc').value
     };
-    const auto = document.getElementById('auto-approve-toggle').checked;
-    await addDoc(collection(db, "apps"), data);
-    await updateDoc(doc(db, "settings", "comments"), { autoApprove: auto }).catch(() => {});
-    location.reload();
-};
 
-window.deleteApp = async (id) => {
-    if(confirm("Delete this app permanently?")) {
+    try {
+        await addDoc(collection(db, "apps"), data);
+        location.reload();
+    } catch (e) {
+        btn.disabled = false;
+        btn.innerText = "Error - Try Again";
+    }
+}
+
+async function deleteApp(id) {
+    if(confirm("Permanently remove this application?")) {
         await deleteDoc(doc(db, "apps", id));
         location.reload();
     }
+}
+
+const prepareEdit = (app) => {
+    UI.adminModal.style.display = 'flex';
+    document.getElementById('new-app-name').value = app.name;
+    document.getElementById('new-app-rating').value = app.rating;
+    document.getElementById('new-app-size').value = app.size;
+    document.getElementById('new-app-icon').value = app.icon;
+    document.getElementById('new-app-link').value = app.link;
+    document.getElementById('new-app-desc').value = app.description;
+    
+    const submit = document.getElementById('admin-submit-btn');
+    submit.innerText = "Update Application";
+    submit.onclick = async () => {
+        await updateDoc(doc(db, "apps", app.id), {
+            name: document.getElementById('new-app-name').value,
+            description: document.getElementById('new-app-desc').value,
+            link: document.getElementById('new-app-link').value,
+            icon: document.getElementById('new-app-icon').value,
+            size: document.getElementById('new-app-size').value,
+            rating: document.getElementById('new-app-rating').value
+        });
+        location.reload();
+    };
 };
 
-window.filterApps = () => {
-    const q = document.getElementById('main-search').value.toLowerCase();
+/**
+ * Global Event Listeners (Optimized Delegation)
+ */
+document.addEventListener('click', (e) => {
+    // Dropdown toggle
+    if (e.target.id === 'user-photo') {
+        UI.userMenu.style.display = UI.userMenu.style.display === 'block' ? 'none' : 'block';
+        return;
+    }
+    UI.userMenu.style.display = 'none';
+
+    // Admin Modal Close
+    if (e.target.id === 'admin-modal' || e.target.id === 'btn-close-admin') {
+        UI.adminModal.style.display = 'none';
+    }
+});
+
+UI.search.addEventListener('input', debounce((e) => {
+    const q = e.target.value.toLowerCase();
     const filtered = allApps.filter(a => a.name.toLowerCase().includes(q));
     renderApps(filtered);
+}));
+
+document.getElementById('btn-open-admin').onclick = () => UI.adminModal.style.display = 'flex';
+document.getElementById('btn-login').onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).then(() => location.reload());
+document.getElementById('btn-logout').onclick = () => signOut(auth).then(() => location.reload());
+document.getElementById('btn-back').onclick = () => {
+    UI.detailsView.style.display = 'none';
+    UI.mainView.style.display = 'block';
 };
 
-window.goBack = () => {
-    document.getElementById('main-view').style.display = 'block';
-    document.getElementById('details-view').style.display = 'none';
-    window.scrollTo(0,0);
+// Category Filtering
+document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+        document.querySelector('.chip.active').classList.remove('active');
+        this.classList.add('active');
+        const cat = this.dataset.category;
+        const filtered = cat === 'all' ? allApps : allApps.filter(a => (a.category || '').includes(cat));
+        renderApps(filtered);
+    });
+});
+
+/**
+ * Comments Logic
+ */
+async function loadGlobalComments() {
+    const q = query(collection(db, "global_comments"), orderBy("timestamp", "desc"), limit(10));
+    const snap = await getDocs(q);
+    UI.commentsList.innerHTML = snap.docs.map(d => {
+        const c = d.data();
+        return `
+            <div class="comment-item" style="padding:12px; border-bottom:1px solid var(--border-light);">
+                <strong>${c.user}</strong>
+                <p style="font-size:14px; color:var(--text-secondary);">${c.text}</p>
+            </div>
+        `;
+    }).join('') || '<p style="text-align:center; padding:20px; color:var(--text-secondary);">No feedback yet.</p>';
+}
+
+document.getElementById('btn-post-feedback').onclick = async () => {
+    const u = document.getElementById('home-comment-user');
+    const t = document.getElementById('home-comment-text');
+    if(!u.value || !t.value) return;
+
+    await addDoc(collection(db, "global_comments"), {
+        user: u.value,
+        text: t.value,
+        timestamp: Date.now()
+    });
+    u.value = ''; t.value = '';
+    loadGlobalComments();
 };
 
-// UI Triggers
-window.toggleDropdown = (e) => {
-    e.stopPropagation();
-    const m = document.getElementById('user-menu');
-    m.style.display = m.style.display === 'block' ? 'none' : 'block';
-};
-document.addEventListener('click', () => { document.getElementById('user-menu').style.display = 'none'; });
-window.openAdminPanel = () => document.getElementById('admin-modal').style.display = 'flex';
-window.closeAdmin = () => document.getElementById('admin-modal').style.display = 'none';
-window.loginWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider()).then(() => location.reload());
-window.logout = () => signOut(auth).then(() => location.reload());
-
-loadApps();
+// Initial Init
+document.addEventListener('DOMContentLoaded', loadData);
