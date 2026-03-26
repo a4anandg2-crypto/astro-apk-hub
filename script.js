@@ -3,6 +3,19 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// =========================================================================
+// 🛠️ MANUAL APP METADATA (EDIT RATINGS & SIZES HERE)
+// Control Ratings and Sizes from this object. Use the slugified app name.
+// =========================================================================
+const APP_METADATA = {
+    "default": { rating: "4.5", size: "15 MB" },
+    // Examples (add your actual app slugs here):
+    // "whatsapp-plus": { rating: "4.8", size: "52 MB" },
+    // "spotify-premium": { rating: "4.9", size: "35 MB" },
+    // "kinemaster-pro": { rating: "4.7", size: "95 MB" }
+};
+// =========================================================================
+
 const firebaseConfig = {
   apiKey: "AIzaSyCiIYUWBTr3__sQo--g6dWvMIxDjqC7r0o",
   authDomain: "astro-apk-hub.firebaseapp.com",
@@ -94,6 +107,10 @@ window.renderApps = (data) => {
         const plainDesc = (app.description || '').replace(/[#*]/g, '').trim();
         const shortDesc = plainDesc ? plainDesc.substring(0, 60) + '...' : 'Premium Modded Experience';
 
+        // Retrieve metadata safely
+        const slug = getSlug(app.name || "");
+        const meta = APP_METADATA[slug] || APP_METADATA["default"];
+
         return `
         <article class="store-card" onclick="decodeAndOpen('${safeName}', '${safeIcon}', '${safeLink}', '${safeDesc}', '${app.id}')" tabindex="0" role="button" aria-label="View ${app.name}">
             <div class="store-icon-wrapper">
@@ -101,6 +118,11 @@ window.renderApps = (data) => {
             </div>
             <div class="store-info">
                 <h3 class="store-title">${app.name}</h3>
+                <div class="store-meta">
+                    <span class="meta-rating">⭐ ${meta.rating}</span>
+                    <span class="meta-dot">&bull;</span>
+                    <span class="meta-size">${meta.size}</span>
+                </div>
                 <p class="store-desc">${shortDesc}</p>
             </div>
             <div class="store-action">
@@ -134,6 +156,10 @@ window.openAppDetails = (name, icon, link, desc, id, updateHistory = true) => {
 
     const isAdmin = auth.currentUser && ADMIN_EMAILS.includes(auth.currentUser.email);
 
+    // Retrieve metadata safely
+    const slug = getSlug(name || "");
+    const meta = APP_METADATA[slug] || APP_METADATA["default"];
+
     document.getElementById('dynamic-content').innerHTML = `
         <div class="app-page-wrapper" style="animation: fadeIn 0.4s ease;">
             
@@ -158,8 +184,12 @@ window.openAppDetails = (name, icon, link, desc, id, updateHistory = true) => {
 
             <div class="detail-stats">
                 <div class="stat-item">
-                    <span class="stat-val">4.9 ★</span>
+                    <span class="stat-val">${meta.rating} ★</span>
                     <span class="stat-lbl">Rating</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val">${meta.size}</span>
+                    <span class="stat-lbl">Size</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-val">100%</span>
