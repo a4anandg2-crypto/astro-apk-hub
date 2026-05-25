@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#09090b">
-    <title>SmArT AStro HuB | Safe & Verified Premium APK Store</title>
-    <meta name="description" content="Discover and download 100% safe, verified, ad-free premium APKs and mods. SmArT AStro HuB offers fast downloads, secure apps, and the latest mobile tools.">
-    <meta name="keywords" content="premium apk, mod apk, verified apps, download safe apk, android mods, smart astro hub">
-    <meta name="author" content="SmArT AStro HuB">
+    <title>Mods Hub | Safe & Verified Premium APK Store</title>
+    <meta name="description" content="Discover and download 100% safe, verified, ad-free premium APKs and mods. Mods Hub offers fast downloads, secure apps, and the latest mobile tools.">
+    <meta name="keywords" content="premium apk, mod apk, verified apps, download safe apk, android mods, Mods Hub">
+    <meta name="author" content="Mods Hub">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://astroapkhub.in/">
-    <meta property="og:title" content="SmArT AStro HuB | Premium APK Store">
+    <meta property="og:title" content="Mods Hub | Premium APK Store">
     <meta property="og:description" content="Download 100% verified, ad-free premium APKs. Fast, secure, and always updated.">
     <meta property="og:image" content="https://astroapkhub.in/favicon.png">
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://astroapkhub.in/">
-    <meta property="twitter:title" content="SmArT AStro HuB | Premium Mods">
+    <meta property="twitter:title" content="Mods Hub | Premium Mods">
     <meta property="twitter:description" content="Download safe and verified premium APKs. Your trusted app marketplace.">
     <meta property="twitter:image" content="https://astroapkhub.in/favicon.png">
     <link rel="canonical" href="https://astroapkhub.in/">
@@ -28,7 +28,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "SmArT AStro HuB",
+      "name": "Mods Hub",
       "url": "https://astroapkhub.in/",
       "potentialAction": {
         "@type": "SearchAction",
@@ -46,7 +46,7 @@
     <nav class="app-nav blur-header">
         <div class="container nav-flex">
             <h1 class="nav-logo" onclick="goHome()" tabindex="0" aria-label="Home">
-                <span class="logo-icon">🚀</span> Astro Hub
+                <span class="logo-icon">🚀</span> Mods Hub 
             </h1>
             <div class="nav-links desktop-only">
                 <button onclick="goHome()" class="nav-btn">Home</button>
@@ -62,7 +62,7 @@
                 <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="user-avatar" alt="User Menu" onclick="toggleDropdown(event)">
                 <div id="user-menu" class="dropdown-menu blur-bg">
                     <div id="admin-controls" style="display:none;">
-                        <button onclick="openAdminPanel()">Publish App</button>
+                        <button onclick="openAdminPanel()">Add Mods</button>
                         <button onclick="generateRobotsTxt()">Download Robots.txt</button>
                         <button onclick="downloadSitemapPreview()">Download Sitemap</button>
                         <div class="divider"></div>
@@ -86,10 +86,10 @@
         <section class="container filter-section">
             <div class="categories-slider" id="category-filters">
                 <button class="cat-chip active" onclick="setCategoryFilter('All', this)">All Apps</button>
-                <button class="cat-chip" onclick="setCategoryFilter('Gaming', this)">Gaming</button>
-                <button class="cat-chip" onclick="setCategoryFilter('Tools', this)">Tools</button>
-                <button class="cat-chip" onclick="setCategoryFilter('Education', this)">Education</button>
-                <button class="cat-chip" onclick="setCategoryFilter('Entertainment', this)">Entertainment</button>
+                <button class="cat-chip" onclick="setCategoryFilter('Android Game', this)">Android Game</button>
+                <button class="cat-chip" onclick="setCategoryFilter('PC Game', this)">PC Game</button>
+                <button class="cat-chip" onclick="setCategoryFilter('PC Software', this)">PC Software</button>
+                <button class="cat-chip" onclick="setCategoryFilter('Android Software', this)">Android Software</button>
             </div>
         </section>
         <section class="container main-content">
@@ -118,7 +118,7 @@
     <footer class="app-footer">
         <div class="container footer-grid">
             <div class="footer-brand">
-                <h2 class="cosmic-glow">SmArT AStro HuB</h2>
+                <h2 class="cosmic-glow">Mods Hub</h2>
                 <p>Your trusted marketplace for secure, premium Android experiences across the galaxy.</p>
             </div>
             <div class="footer-links">
@@ -130,7 +130,7 @@
             </div>
         </div>
         <div class="footer-bottom container">
-            <p>&copy; 2026 SmArT AStro HuB. All rights reserved.</p>
+            <p>&copy; 2026 Mods Hub. All rights reserved.</p>
         </div>
     </footer>
 
@@ -143,10 +143,10 @@
                 <input type="url" id="new-app-icon" class="input-field" placeholder="App Icon URL">
                 <input type="url" id="new-app-link" class="input-field" placeholder="Download Link">
                 <select id="new-app-category" class="input-field">
-                    <option value="Tools">Tools</option>
-                    <option value="Gaming">Gaming</option>
-                    <option value="Education">Education</option>
-                    <option value="Entertainment">Entertainment</option>
+                    <option value="Android Game">Android Game</option>
+                    <option value="PC Game">PC Game</option>
+                    <option value="PC Software">PC Software</option>
+                    <option value="Android Software">Android Software</option>
                 </select>
                 <div style="display:flex; gap:10px;">
                     <input type="number" id="new-app-rating" class="input-field" placeholder="Rating (e.g. 4.8)" step="0.1" min="1" max="5">

@@ -17,8 +17,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const FALLBACK_ICON = "https://cdn-icons-png.flaticon.com/512/873/873117.png";
-const APP_HOME_TITLE = "SmArT AStro HuB | Safe & Verified Premium APK Store";
-const ADMIN_EMAILS = ["a4anandg2@gmail.com", "per149209@gmail.com"];
+const APP_HOME_TITLE = "Mods Hub | Safe & Verified Premium APK Store";
+const ADMIN_EMAILS = ["a4anandg2@gmail.com", ""];
 
 let allApps = [];
 let selectedAppId = null;
@@ -36,7 +36,7 @@ const resetAdminForm = () => {
     ["new-app-name", "new-app-icon", "new-app-link", "new-app-desc", "new-app-rating", "new-app-size"].forEach(id => {
         document.getElementById(id).value = "";
     });
-    document.getElementById("new-app-category").value = "Tools";
+    document.getElementById("new-app-category").value = "Android Game";
 };
 
 const setPageTitle = (title) => { document.title = title; };
@@ -74,7 +74,7 @@ onAuthStateChanged(auth, (user) => {
 async function loadApps() {
     try {
         const snap = await getDocs(collection(db, "apps"));
-        allApps = snap.docs.map((d) => ({ id: d.id, category: "Tools", rating: "4.8", size: "Unknown", ...d.data() }));
+        allApps = snap.docs.map((d) => ({ id: d.id, category: "Android Game", rating: "4.8", size: "Unknown", ...d.data() }));
         window.filterApps();
         checkUrlAndRoute();
     } catch (e) { console.error(e); }
@@ -179,7 +179,7 @@ window.goBack = () => window.goHome();
 
 window.openCategories = (updateHistory = true) => {
     if (updateHistory) window.history.pushState({}, "Categories", "/categories");
-    setPageTitle("Categories | SmArT AStro HuB");
+    setPageTitle("Categories | Mods Hub");
     hideAllViews();
     document.getElementById("main-view").style.display = "block";
     document.getElementById("main-search").focus();
@@ -188,14 +188,14 @@ window.openCategories = (updateHistory = true) => {
 
 window.openPage = (path, title, content, updateHistory = true) => {
     if (updateHistory) window.history.pushState({}, title, `/${path}`);
-    setPageTitle(`${title} | SmArT AStro HuB`);
+    setPageTitle(`${title} | Mods Hub`);
     hideAllViews();
     document.getElementById("page-view").style.display = "block";
     document.getElementById("static-content").innerHTML = buildPageView(title, content);
     window.scrollTo(0, 0);
 };
 
-window.openAbout = (updateHistory = true) => window.openPage("about", "About Us", "<p>Welcome to <strong>SmArT AStro HuB</strong>. We are a passionate team dedicated to delivering the safest, fastest, and most reliable premium APK modifications across the digital cosmos.</p><p>Our infrastructure is built for speed and security, ensuring every application meets strict verification protocols before launch.</p>", updateHistory);
+window.openAbout = (updateHistory = true) => window.openPage("about", "About Us", "<p>Welcome to <strong>Mods Hub</strong>. We are a passionate team dedicated to delivering the safest, fastest, and most reliable premium APK modifications across the digital cosmos.</p><p>Our infrastructure is built for speed and security, ensuring every application meets strict verification protocols before launch.</p>", updateHistory);
 window.openContact = (e, updateHistory = true) => { if (e) e.preventDefault(); window.openPage("contact", "Contact Command", "<p>Encountered a black hole? Need a specific mod? Reach out to our command center.</p><p>Email: <a href='mailto:a4anandg2@gmail.com' style='color:var(--accent-neon)'>a4anandg2@gmail.com</a></p><p>Telegram: <a href='https://t.me/+IQLcSRo_2y5mZGVl' style='color:var(--accent-neon)'>Astro Community</a></p>", updateHistory); };
 window.openPrivacy = (e, updateHistory = true) => { if (e) e.preventDefault(); window.openPage("privacy", "Privacy Protocol", "<p>Your coordinates and personal data remain strictly confidential. We deploy advanced encryption and do not harvest unnecessary telemetry data.</p>", updateHistory); };
 window.openTerms = (e, updateHistory = true) => { if (e) e.preventDefault(); window.openPage("terms", "Terms of Engagement", "<p>All files provided within the Hub are for educational exploration and testing. Pilots assume full responsibility for their device's trajectory.</p>", updateHistory); };
@@ -205,7 +205,7 @@ window.openAppDetails = (appItem, updateHistory = true) => {
     const { id, name, icon, link, description, rating, size, category } = appItem;
     selectedAppId = id;
     if (updateHistory) window.history.pushState({ appId: id }, name, `/${getSlug(name)}`);
-    setPageTitle(`${name} Premium Mod | SmArT AStro HuB`);
+    setPageTitle(`${name} Premium Mod | Mods Hub`);
     hideAllViews();
     document.getElementById("details-view").style.display = "block";
     
@@ -220,7 +220,7 @@ window.openAppDetails = (appItem, updateHistory = true) => {
     detailMeta.appendChild(createEl("p", "detail-publisher", category || "Verified Premium Mod"));
     
     const ctaWrap = createEl("div");
-    const dlBtn = createEl("button", "btn-primary cosmic-shadow", "Initialize Download"); dlBtn.type = "button";
+    const dlBtn = createEl("button", "btn-primary cosmic-shadow", "Get Link"); dlBtn.type = "button";
     const progressBox = createEl("div", "progress-box"); const progressBar = createEl("div", "progress-fill"); progressBox.appendChild(progressBar);
     const dlStatus = createEl("p", "", "Establishing secure connection..."); dlStatus.style.cssText = "font-size: 13px; color: var(--accent-neon); margin-top: 10px; display: none; font-weight: 500;";
     
@@ -274,7 +274,7 @@ window.editExistingApp = (appItem) => {
     document.getElementById("new-app-desc").value = appItem.description || "";
     document.getElementById("new-app-rating").value = appItem.rating || "";
     document.getElementById("new-app-size").value = appItem.size || "";
-    document.getElementById("new-app-category").value = appItem.category || "Tools";
+    document.getElementById("new-app-category").value = appItem.category || "Android Game";
     
     const button = document.querySelector(".btn-primary.w-100");
     button.innerText = "Save Coordinates";
